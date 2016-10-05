@@ -2,7 +2,7 @@
 
 var Enemy = function () {
     this.startCount = 1; // startCount turned on
-    this.ypositionArray = [60, 140, 220]; // y-coordinates of positions
+    this.ypositionArray = [59, 139, 219]; // y-coordinates of positions
     this.sprite = 'images/enemy-bug.png';
 };
 
@@ -22,31 +22,34 @@ Enemy.prototype.update = function (dt) {
     this.x = this._x; // upating the x-position
 };
 
-// Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
 var Player = function () {
-    Enemy.call(this);
-    this.boy = 'images/char-boy.png';
+    Enemy.call(this); // Player is subclass of Enemy
+    this.boy = 'images/char-boy.png'; // Starting character
 };
 
 Player.prototype.update = function () {
-    if (this.startCount == 1) {
+    
+    this.x = this._x;
+    this.y = this._y;
+
+    if (this.startCount == 1) { // startcount turned on
         this._x = 200;
         this._y = 380;
-        this.startCount = 0;
-    } else if (false) {
-        this.startCount = 1;
-    } 
+        this.startCount = 0; // player reset. startcounter turned off
+    }
     
-    this.x = this._x; 
-    this.y = this._y;
+    for (i=0; i<3; i++) {
+        this.x_contact = Math.abs(allEnemies[i].x - this._x);
+        this.y_contact = Math.abs(allEnemies[i].y - this._y);
+        if (this.x_contact < 40 && this.y_contact < 60) {
+            this.startCount = 1;
+        }
+    };
+
 
 };
 
@@ -56,21 +59,32 @@ Player.prototype.render = function () {
 };
 
 Player.prototype.handleInput = function (keyInput) {
-/*    if (keyInput == 'left') {
-        this.y += 100
-    }*/
+    /*    if (keyInput == 'left') {
+            this.y += 100
+        }*/
     switch (keyInput) {
     case 'left':
-        this._x -= 100;    
+        if (this._x > 0) {
+            this._x -= 100;
+        }
         break;
     case 'up':
-        this._y -= 80;    
+        if (this._y > 60) {
+            this._y -= 80;
+        } else if (this._y <= 60){
+            this._y -= 80;
+            this.startCount = 1;
+        }
         break;
     case 'right':
-        this._x += 100;    
+        if (this._x < 400) {
+            this._x += 100;
+        }
         break;
     case 'down':
-        this._y += 80;    
+        if (this._y < 380) {
+            this._y += 80;
+        }
         break;
     }
 };
