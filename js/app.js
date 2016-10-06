@@ -1,9 +1,9 @@
 // Enemies our player must avoid
 
 var Enemy = function () {
+    this.sprite = 'images/enemy-bug.png';
     this.startCount = 1; // startCount turned on
     this.ypositionArray = [59, 139, 219]; // y-coordinates of positions
-    this.sprite = 'images/enemy-bug.png';
 };
 
 // Update the enemy's position, required method for game
@@ -28,8 +28,10 @@ Enemy.prototype.render = function () {
 
 var Player = function () {
     Enemy.call(this); // Player is subclass of Enemy
-    this.boy = 'images/char-boy.png'; // Starting character
+    this.sprite = 'images/char-boy.png'; // Starting character
 };
+
+Player.prototype = Object.create(Enemy.prototype);
 
 Player.prototype.update = function () {
     
@@ -53,15 +55,13 @@ Player.prototype.update = function () {
 
 };
 
-Player.prototype.render = function () {
-    ctx.drawImage(Resources.get(this.boy), this.x, this.y);
+// we dont need this function because it is inherited for Enemy class
+/*Player.prototype.render = function () {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
-};
+};*/
 
 Player.prototype.handleInput = function (keyInput) {
-    /*    if (keyInput == 'left') {
-            this.y += 100
-        }*/
     switch (keyInput) {
     case 'left':
         if (this._x > 0) {
@@ -89,12 +89,35 @@ Player.prototype.handleInput = function (keyInput) {
     }
 };
 
+
+var Gem = function () {
+    Enemy.call(this); // Gem is subclass of Enemy
+    
+    var test = {
+        green : 'images/Gem Green',
+        blue : 'images/Gem Green',
+        green : 'images/Gem Green'
+    }
+        
+/*    this.gem = function() {
+        
+    }
+    this.green= 'images/Gem Green'; // Green Gem 
+    this.blue= 'images/Gem Blue'; // Blue Gem 
+    this.orange= 'images/Gem Orange'; // Orange Gem */
+};
+
+
+
+
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
 var allEnemies = [new Enemy, new Enemy, new Enemy];
 var player = new Player;
+var gem = new Gem;
 
 
 // This listens for key presses and sends the keys to your
