@@ -34,10 +34,6 @@ var Player = function () {
 Player.prototype = Object.create(Enemy.prototype);
 
 Player.prototype.update = function () {
-    
-    this.x = this._x;
-    this.y = this._y;
-
     if (this.startCount == 1) { // startcount turned on
         this._x = 200;
         this._y = 380;
@@ -51,15 +47,10 @@ Player.prototype.update = function () {
             this.startCount = 1;
         }
     };
-
+    this.x = this._x;
+    this.y = this._y;
 
 };
-
-// we dont need this function because it is inherited for Enemy class
-/*Player.prototype.render = function () {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-
-};*/
 
 Player.prototype.handleInput = function (keyInput) {
     switch (keyInput) {
@@ -89,26 +80,30 @@ Player.prototype.handleInput = function (keyInput) {
     }
 };
 
-
-var Gem = function () {
+var Gem = function (color_num) {
     Enemy.call(this); // Gem is subclass of Enemy
-    
-    var test = {
-        green : 'images/Gem Green',
-        blue : 'images/Gem Green',
-        green : 'images/Gem Green'
-    }
-        
-/*    this.gem = function() {
-        
-    }
-    this.green= 'images/Gem Green'; // Green Gem 
-    this.blue= 'images/Gem Blue'; // Blue Gem 
-    this.orange= 'images/Gem Orange'; // Orange Gem */
+    this.gems = [
+         'images/Gem-Green.png',
+         'images/Gem-Blue.png',
+         'images/Gem-Orange.png'
+    ];
+    this.sprite = this.gems[color_num];
 };
 
 
+Gem.prototype = Object.create(Enemy.prototype);
 
+Gem.prototype.update = function () {
+    if (this.startCount == 1) { // startcount turned on
+        this._x = 100;
+        this._y = 220;
+        this.startCount = 0; // player reset. startcounter turned off
+    }
+    
+    this.x = this._x;
+    this.y = this._y;
+
+};
 
 
 // Now instantiate your objects.
@@ -117,7 +112,7 @@ var Gem = function () {
 
 var allEnemies = [new Enemy, new Enemy, new Enemy];
 var player = new Player;
-var gem = new Gem;
+var allGems = [new Gem(0), new Gem(1), new Gem(2)];
 
 
 // This listens for key presses and sends the keys to your
