@@ -1,9 +1,28 @@
-// Enemies our player must avoid
+/*
+    Randomize array element order in-place.
+    Using Durstenfeld shuffle algorithm.
+ */
 
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+};
+
+// Arrays used for random placing
+var xArray = [0, 100, 200, 300, 400];
+var yArray = [60, 140, 220, 300, 380];
+
+// Enemies our player must avoid
 var Enemy = function () {
     this.sprite = 'images/enemy-bug.png';
     this.startCount = 1; // startCount turned on
-    this.ypositionArray = [59, 139, 219]; // y-coordinates of positions
+    this.ypositionArray = yArray.slice(0, 3);
+    //    this.ypositionArray = [59, 139, 219]; // y-coordinates of positions
 };
 
 // Update the enemy's position, required method for game
@@ -34,13 +53,14 @@ var Player = function () {
 Player.prototype = Object.create(Enemy.prototype);
 
 Player.prototype.update = function () {
+
     if (this.startCount == 1) { // startcount turned on
         this._x = 200;
         this._y = 380;
         this.startCount = 0; // player reset. startcounter turned off
     }
-    
-    for (i=0; i<3; i++) {
+
+    for (i = 0; i < 3; i++) {
         this.x_contact = Math.abs(allEnemies[i].x - this._x);
         this.y_contact = Math.abs(allEnemies[i].y - this._y);
         if (this.x_contact < 40 && this.y_contact < 60) {
@@ -62,7 +82,7 @@ Player.prototype.handleInput = function (keyInput) {
     case 'up':
         if (this._y > 60) {
             this._y -= 80;
-        } else if (this._y <= 60){
+        } else if (this._y <= 60) {
             this._y -= 80;
             this.startCount = 1;
         }
@@ -82,6 +102,7 @@ Player.prototype.handleInput = function (keyInput) {
 
 var Gem = function (color_num) {
     Enemy.call(this); // Gem is subclass of Enemy
+    this.color_num = color_num;
     this.gems = [
          'images/Gem-Green.png',
          'images/Gem-Blue.png',
@@ -94,12 +115,33 @@ var Gem = function (color_num) {
 Gem.prototype = Object.create(Enemy.prototype);
 
 Gem.prototype.update = function () {
-    if (this.startCount == 1) { // startcount turned on
-        this._x = 100;
-        this._y = 220;
+    if (this.startCount == 1) {
+        this._x = shuffleArray(xArray)[0];
+        switch (this.color_num) {
+        case 0:
+            this._y = shuffleArray(yArray.slice(3))[0];
+            break;
+            case 1:
+            this._y = shuffleArray(yArray.slice(0, 3))[0];
+            break;
+        case 2:
+            this._y = shuffleArray(yArray.slice(0, 3))[0];
+            break;
+        }
+/*        if (this.color_num == 1 || this.color_num == 2) {
+            this._y = shuffleArray(yArray.slice(0, 3))[0];
+        }
+        if (this.color_num == 0) {
+            this._y = shuffleArray(yArray.slice(2, 2))[0];
+        }*/
         this.startCount = 0; // player reset. startcounter turned off
     }
-    
+
+    this.x_contact = Math.abs(player.x - this._x);
+    this.y_contact = Math.abs(player.y - this._y);
+    if (this.x_contact < 40 && this.y_contact < 60) {
+        this.startCount = 1;
+    }
     this.x = this._x;
     this.y = this._y;
 
