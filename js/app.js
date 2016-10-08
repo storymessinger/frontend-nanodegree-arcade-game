@@ -1,3 +1,4 @@
+'use strict';
 /*
     Randomize array element order in-place.
     Using Durstenfeld shuffle algorithm.
