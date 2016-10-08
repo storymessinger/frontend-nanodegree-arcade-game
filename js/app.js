@@ -123,11 +123,11 @@ Gem.prototype.update = function () {
         case 0:
             this._y = shuffleArray(yArray.slice(3))[0];
             break;
-            case 1:
-            this._y = shuffleArray(yArray.slice(0, 3))[0];
+        case 1:
+            this._y = shuffleArray(yArray.slice(0, 1))[0];
             break;
         case 2:
-            this._y = shuffleArray(yArray.slice(0, 3))[0];
+            this._y = shuffleArray(yArray.slice(1, 3))[0];
             break;
         }
         this.startCount = 0; // player reset. startcounter turned off
