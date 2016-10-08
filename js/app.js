@@ -1,18 +1,4 @@
 'use strict';
-/*
-    Randomize array element order in-place.
-    Using Durstenfeld shuffle algorithm.
- */
-
-function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
-};
 
 // Arrays used for random placing
 var XARRAY = [0, 100, 200, 300, 400];
@@ -118,19 +104,29 @@ var Gem = function (color_num) {
 Gem.prototype = Object.create(Enemy.prototype);
 Gem.prototype.constructor = Gem.prototype;
 
+// Randomize array element order in-place.
+Gem.prototype.shuffle = function (array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+};
 
 Gem.prototype.update = function () {
     if (this.startCount == 1) {
-        this._x = shuffleArray(XARRAY)[0];
+        this._x = this.shuffle(XARRAY)[0];
         switch (this.color_num) {
         case 0:
-            this._y = shuffleArray(YARRAY.slice(3))[0];
+            this._y = this.shuffle(YARRAY.slice(3))[0];
             break;
         case 1:
-            this._y = shuffleArray(YARRAY.slice(0, 1))[0];
+            this._y = this.shuffle(YARRAY.slice(0, 1))[0];
             break;
         case 2:
-            this._y = shuffleArray(YARRAY.slice(1, 3))[0];
+            this._y = this.shuffle(YARRAY.slice(1, 3))[0];
             break;
         }
         this.startCount = 0; // player reset. startcounter turned off
@@ -141,7 +137,6 @@ Gem.prototype.update = function () {
     
     this.x_contact = Math.abs(player.x - this._x);
     this.y_contact = Math.abs(player.y - this._y);
-//    if (this.x_contact < 40 && this.y_contact < 60 && this._x > 0 ){
     if ((this.x_contact < 40 && this.y_contact < 60) && this.reappearCount==0){
         this._x = 900; // Sending the gem temporarilry to outside canvas
         this._y = 900;
