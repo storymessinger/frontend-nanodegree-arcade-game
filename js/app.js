@@ -109,10 +109,12 @@ var Gem = function (color_num) {
          'images/Gem-Orange.png'
     ];
     this.sprite = this.gems[color_num];
+    this.reappearCount = 0;
 };
 
 
 Gem.prototype = Object.create(Enemy.prototype);
+
 
 Gem.prototype.update = function () {
     if (this.startCount == 1) {
@@ -128,23 +130,32 @@ Gem.prototype.update = function () {
             this._y = shuffleArray(yArray.slice(0, 3))[0];
             break;
         }
-/*        if (this.color_num == 1 || this.color_num == 2) {
-            this._y = shuffleArray(yArray.slice(0, 3))[0];
-        }
-        if (this.color_num == 0) {
-            this._y = shuffleArray(yArray.slice(2, 2))[0];
-        }*/
         this.startCount = 0; // player reset. startcounter turned off
     }
 
-    this.x_contact = Math.abs(player.x - this._x);
-    this.y_contact = Math.abs(player.y - this._y);
-    if (this.x_contact < 40 && this.y_contact < 60) {
-        this.startCount = 1;
-    }
     this.x = this._x;
     this.y = this._y;
-
+    
+    this.x_contact = Math.abs(player.x - this._x);
+    this.y_contact = Math.abs(player.y - this._y);
+//    if (this.x_contact < 40 && this.y_contact < 60 && this._x > 0 ){
+    if ((this.x_contact < 40 && this.y_contact < 60) && this.reappearCount==0){
+        this._x = 900; // Sending the gem temporarilry to outside canvas
+        this._y = 900;
+        this.reappearCount = 1; // reappearCount is now on
+    }
+    
+    this.reappear = function() {
+        this.startCount = 1; // startCount is now on
+    }; 
+    
+    if (this.reappearCount == 1) {
+        this.reappearCount = 0;
+        var $this= this; // setTimeout has different this, so we use global variable $this to send it in
+        setTimeout(function() {
+            $this.startCount = 1; // startCount of specific gem is now on
+        }, Math.floor(Math.random() * 3000)+ 1000); // startCount is turned on after randomly selected time, within the range of 1000 to 3000;)
+    }
 };
 
 

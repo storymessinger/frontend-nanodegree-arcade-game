@@ -93,6 +93,7 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         allGems.forEach(function(gem) {
             gem.update(dt);
+//            gem.reappear();
         });
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
