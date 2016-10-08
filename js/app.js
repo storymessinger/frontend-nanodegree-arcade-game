@@ -104,9 +104,9 @@ var Gem = function (color_num) {
     Enemy.call(this); // Gem is subclass of Enemy
     this.color_num = color_num;
     this.gems = [
-         'images/Gem-Green.png',
-         'images/Gem-Blue.png',
-         'images/Gem-Orange.png'
+         'images/Gem Green.png',
+         'images/Gem Blue.png',
+         'images/Gem Orange.png'
     ];
     this.sprite = this.gems[color_num];
     this.reappearCount = 0;
