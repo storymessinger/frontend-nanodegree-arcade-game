@@ -15,14 +15,14 @@ function shuffleArray(array) {
 };
 
 // Arrays used for random placing
-var xArray = [0, 100, 200, 300, 400];
-var yArray = [60, 140, 220, 300, 380];
+var XARRAY = [0, 100, 200, 300, 400];
+var YARRAY = [60, 140, 220, 300, 380];
 
 // Enemies our player must avoid
 var Enemy = function () {
     this.sprite = 'images/enemy-bug.png';
     this.startCount = 1; // startCount turned on
-    this.ypositionArray = yArray.slice(0, 3);
+    this.ypositionArray = YARRAY.slice(0, 3);
     //    this.ypositionArray = [59, 139, 219]; // y-coordinates of positions
 };
 
@@ -52,6 +52,7 @@ var Player = function () {
 };
 
 Player.prototype = Object.create(Enemy.prototype);
+Player.prototype.constructor = Player.prototype;
 
 Player.prototype.update = function () {
 
@@ -61,7 +62,7 @@ Player.prototype.update = function () {
         this.startCount = 0; // player reset. startcounter turned off
     }
 
-    for (i = 0; i < 3; i++) {
+    for (var i = 0; i < 3; i++) {
         this.x_contact = Math.abs(allEnemies[i].x - this._x);
         this.y_contact = Math.abs(allEnemies[i].y - this._y);
         if (this.x_contact < 40 && this.y_contact < 60) {
@@ -115,20 +116,21 @@ var Gem = function (color_num) {
 
 
 Gem.prototype = Object.create(Enemy.prototype);
+Gem.prototype.constructor = Gem.prototype;
 
 
 Gem.prototype.update = function () {
     if (this.startCount == 1) {
-        this._x = shuffleArray(xArray)[0];
+        this._x = shuffleArray(XARRAY)[0];
         switch (this.color_num) {
         case 0:
-            this._y = shuffleArray(yArray.slice(3))[0];
+            this._y = shuffleArray(YARRAY.slice(3))[0];
             break;
         case 1:
-            this._y = shuffleArray(yArray.slice(0, 1))[0];
+            this._y = shuffleArray(YARRAY.slice(0, 1))[0];
             break;
         case 2:
-            this._y = shuffleArray(yArray.slice(1, 3))[0];
+            this._y = shuffleArray(YARRAY.slice(1, 3))[0];
             break;
         }
         this.startCount = 0; // player reset. startcounter turned off
