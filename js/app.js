@@ -34,13 +34,20 @@ Enemy.prototype.render = function () {
 
 var Player = function () {
     Enemy.call(this); // Player is subclass of Enemy
-    this.sprite = 'images/char-boy.png'; // Starting character
+    this.character = [
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
+    ]
+    this.sprite = this.character[0];// Starting character
 };
 
 Player.prototype = Object.create(Enemy.prototype);
 Player.prototype.constructor = Player.prototype;
 
-Player.prototype.update = function () {
+Player.prototype.update = function (keyInput) {
 
     if (this.startCount == 1) { // startcount turned on
         this._x = 200;
@@ -62,6 +69,25 @@ Player.prototype.update = function () {
 
 Player.prototype.handleInput = function (keyInput) {
     switch (keyInput) {
+    case '1':
+        this.sprite = this.character[0]; // Starting character
+        break;
+            
+    case '2':
+        this.sprite = this.character[1]; // Starting character
+        break;
+            
+    case '3':
+        this.sprite = this.character[2]; // Starting character
+        break;
+            
+    case '4':
+        this.sprite = this.character[3]; // Starting character
+        break;
+    case '5':
+        this.sprite = this.character[4]; // Starting character
+        break;
+            
     case 'left':
         if (this._x > 0) {
             this._x -= 100;
@@ -170,6 +196,11 @@ var allGems = [new Gem(0), new Gem(1), new Gem(2)];
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function (e) {
     var allowedKeys = {
+        49: '1',
+        50: '2',
+        51: '3',
+        52: '4',
+        53: '5',
         37: 'left',
         38: 'up',
         39: 'right',
