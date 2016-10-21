@@ -47,7 +47,7 @@ var Player = function () {
 Player.prototype = Object.create(Enemy.prototype);
 Player.prototype.constructor = Player.prototype;
 
-Player.prototype.update = function (keyInput) {
+Player.prototype.update = function () {
 
     if (this.startCount == 1) { // startcount turned on
         this._x = 200;
@@ -126,7 +126,6 @@ var Gem = function (color_num) {
     this.reappearCount = 0;
 };
 
-
 Gem.prototype = Object.create(Enemy.prototype);
 Gem.prototype.constructor = Gem.prototype;
 
@@ -182,7 +181,33 @@ Gem.prototype.update = function () {
     }
 };
 
+var Instructions = function () {
+    Enemy.call(this); // Instructions is subclass of Enemy
+    this.inst = true;
+};
 
+Instructions.prototype = Object.create(Enemy.prototype);
+Instructions.prototype.constructor = Instructions.prototype;
+Instructions.prototype.handleInput = function(keyInput) {
+    if (keyInput == 'esc' ) {
+        this.inst = false;
+    }
+};
+Instructions.prototype.render = function () {
+    ctx.fillStyle = "rgba(0,0,0,0.6)";
+    ctx.fillRect(0,140,505,366);
+    // instruction letters
+    ctx.fillStyle = "rgba(255,255,255,1)";
+    ctx.font="28px Verdana";
+    ctx.fillText("Jundong's Arcade Game", 30, 210);
+    ctx.font="20px Verdana";
+    ctx.fillText("Welcome!",30,280);
+    ctx.fillText("Select the chracter[1-5]",30,310);
+    ctx.fillText("Get as many point as you can!",30,340);
+    ctx.fillText("Click (or esc) to continue",30,400);
+};
+
+    
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -190,12 +215,14 @@ Gem.prototype.update = function () {
 var allEnemies = [new Enemy, new Enemy, new Enemy];
 var player = new Player;
 var allGems = [new Gem(0), new Gem(1), new Gem(2)];
+var instructions = new Instructions;
 
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function (e) {
     var allowedKeys = {
+        27: 'esc',
         49: '1',
         50: '2',
         51: '3',
@@ -208,4 +235,10 @@ document.addEventListener('keyup', function (e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    instructions.handleInput(allowedKeys[e.keyCode]);
+});
+
+document.addEventListener('click', function (e) {
+
+    instructions.handleInput('esc');
 });
