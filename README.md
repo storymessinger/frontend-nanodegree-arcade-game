@@ -4,6 +4,10 @@
 
 This game is implemented version of Udacity's Arcade game.  It is a simple one, so please enjoy :)
 
+##How to run
+
+Please click on index.html or visit my GitHub page (https://storymessinger.github.io/frontend-nanodegree-arcade-game) and enjoy the app!!
+
 ## How to play
 
 You  can control the character with your keyboard arrows. 
